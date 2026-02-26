@@ -86,11 +86,11 @@ export default function QRPay() {
 
             {/* Vendor logos */}
             <div className="flex items-center justify-center gap-3">
-              <VendorBadge name="Vishwa" size="sm" clickable />
+              <VendorBadge name="Vishwa" size="sm" />
               <div className="w-1 h-1 rounded-full bg-border-subtle" />
-              <VendorBadge name="Murmuren" size="sm" clickable />
+              <VendorBadge name="Murmuren" size="sm" />
               <div className="w-1 h-1 rounded-full bg-border-subtle" />
-              <VendorBadge name="Kaivalya" size="sm" clickable />
+              <VendorBadge name="Kaivalya" size="sm" />
             </div>
           </div>
 

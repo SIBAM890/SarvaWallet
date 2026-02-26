@@ -126,7 +126,6 @@ export default function StudentDashboard() {
                   vendorColor={txn.color}
                   amount={txn.amount}
                   timestamp={txn.time}
-                  clickable
                 />
               ))}
             </div>

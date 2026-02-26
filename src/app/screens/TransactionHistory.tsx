@@ -60,8 +60,8 @@ export default function TransactionHistory() {
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${activeFilter === filter
-                      ? 'bg-brand-blue text-text-primary'
-                      : 'bg-surface-card/50 text-text-muted hover:bg-surface-card'
+                    ? 'bg-brand-blue text-text-primary'
+                    : 'bg-surface-card/50 text-text-muted hover:bg-surface-card'
                     }`}
                 >
                   {filter}
@@ -91,7 +91,6 @@ export default function TransactionHistory() {
                     timestamp={`${txn.date} · ${txn.time}`}
                     remainingBalance={txn.balance}
                     showBalance={true}
-                    clickable
                   />
                 ))}
               </div>
