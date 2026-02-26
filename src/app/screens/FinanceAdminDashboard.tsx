@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdminKPICard } from '../components/AdminKPICard';
 import { ActionButton } from '../components/ActionButton';
 import { StatusBadge } from '../components/StatusBadge';
-import { Home, Users, Store, FileBarChart, Settings, ArrowLeft } from 'lucide-react';
+import { Home, Users, Store, FileBarChart, Settings, ArrowLeft, Check, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function FinanceAdminDashboard() {
@@ -15,11 +15,29 @@ export default function FinanceAdminDashboard() {
     { name: 'Kaivalya', value: 28400, fill: '#F5A623' },
   ];
 
-  const pendingApprovals = [
-    { id: 'SSU-2024-0742', name: 'Arjun Sharma', totalSpend: 3420, cycle: 'Cycle 1' },
-    { id: 'SSU-2024-0583', name: 'Priya Mehta', totalSpend: 2850, cycle: 'Cycle 1' },
-    { id: 'SSU-2024-0219', name: 'Rahul Kumar', totalSpend: 4120, cycle: 'Cycle 1' },
+  const recentTransactions = [
+    { id: 'SSU-2026-1042', name: 'Sibam Sahoo', vendor: 'Vishwa', amount: 120, time: 'Today, 2:45 PM' },
+    { id: 'SSU-2024-0583', name: 'Priya Mehta', vendor: 'Murmuren', amount: 80, time: 'Today, 2:20 PM' },
+    { id: 'SSU-2024-0219', name: 'Rahul Kumar', vendor: 'Kaivalya', amount: 250, time: 'Today, 1:50 PM' },
+    { id: 'SSU-2024-0891', name: 'Sneha Reddy', vendor: 'Vishwa', amount: 420, time: 'Today, 1:15 PM' },
   ];
+
+  const [fundRequests, setFundRequests] = useState([
+    { id: 'SSU-2026-1042', name: 'Sibam Sahoo', requestedAmount: 1000, currentBalance: 85, status: 'pending' },
+    { id: 'SSU-2024-0456', name: 'Vikram Singh', requestedAmount: 500, currentBalance: 12, status: 'pending' },
+  ]);
+
+  const handleApproveRequest = (studentId: string) => {
+    setFundRequests(requests => requests.map(req =>
+      req.id === studentId ? { ...req, status: 'approved' } : req
+    ));
+  };
+
+  const handleRejectRequest = (studentId: string) => {
+    setFundRequests(requests => requests.map(req =>
+      req.id === studentId ? { ...req, status: 'rejected' } : req
+    ));
+  };
 
   return (
     <div className="min-h-screen bg-primary-bg">
@@ -51,8 +69,8 @@ export default function FinanceAdminDashboard() {
                   <button
                     key={index}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${item.active
-                        ? 'bg-brand-blue text-text-primary'
-                        : 'text-text-muted hover:bg-surface-card hover:text-text-primary'
+                      ? 'bg-brand-blue text-text-primary'
+                      : 'text-text-muted hover:bg-surface-card hover:text-text-primary'
                       }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -99,9 +117,9 @@ export default function FinanceAdminDashboard() {
                 subtitle="February 2026"
               />
               <AdminKPICard
-                title="Pending Deductions"
-                value="₹42.8K"
-                subtitle="128 students"
+                title="Pending Verification"
+                value={fundRequests.filter(req => req.status === 'pending').length.toString()}
+                subtitle="Fund Raises"
               />
               <AdminKPICard
                 title="Vendor Settlements Due"
@@ -111,40 +129,101 @@ export default function FinanceAdminDashboard() {
               />
             </div>
 
-            {/* Chart */}
-            <div className="bg-surface-card border border-border-subtle rounded-xl p-6 mb-8">
-              <h3 className="text-lg font-bold mb-6">Monthly Spend by Vendor</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={spendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2D1F4A" />
-                  <XAxis
-                    dataKey="name"
-                    stroke="#8B7AA8"
-                    style={{ fontSize: '12px' }}
-                  />
-                  <YAxis
-                    stroke="#8B7AA8"
-                    style={{ fontSize: '12px' }}
-                    tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#1A1128',
-                      border: '1px solid #2D1F4A',
-                      borderRadius: '8px',
-                      color: '#F0EAFF'
-                    }}
-                    formatter={(value: number) => [`₹${value.toLocaleString('en-IN')}`, 'Spend']}
-                  />
-                  <Bar dataKey="value" radius={[8, 8, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="grid grid-cols-2 gap-8 mb-8">
+              {/* Chart */}
+              <div className="bg-surface-card border border-border-subtle rounded-xl p-6">
+                <h3 className="text-lg font-bold mb-6">Monthly Spend by Vendor</h3>
+                <ResponsiveContainer width="100%" height={260}>
+                  <BarChart data={spendData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2D1F4A" />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#8B7AA8"
+                      style={{ fontSize: '12px' }}
+                    />
+                    <YAxis
+                      stroke="#8B7AA8"
+                      style={{ fontSize: '12px' }}
+                      tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#1A1128',
+                        border: '1px solid #2D1F4A',
+                        borderRadius: '8px',
+                        color: '#F0EAFF'
+                      }}
+                      formatter={(value: number) => [`₹${value.toLocaleString('en-IN')}`, 'Spend']}
+                    />
+                    <Bar dataKey="value" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Fund Raise Verification Table */}
+              <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden flex flex-col">
+                <div className="p-6 border-b border-border-subtle">
+                  <h3 className="text-lg font-bold">Fund Raise Requests</h3>
+                </div>
+
+                <div className="overflow-x-auto flex-1">
+                  <table className="w-full">
+                    <thead className="bg-primary-bg/50">
+                      <tr>
+                        <th className="text-left px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
+                          Student
+                        </th>
+                        <th className="text-right px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
+                          Bal / Request
+                        </th>
+                        <th className="text-right px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border-subtle/50">
+                      {fundRequests.map((req) => (
+                        <tr key={req.id} className="hover:bg-surface-card/30 transition-colors">
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-text-primary">{req.name}</div>
+                            <div className="text-xs font-mono text-text-muted">{req.id}</div>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            <div className="text-xs text-warning-amber">Bal: ₹{req.currentBalance}</div>
+                            <div className="text-sm font-semibold text-success-green">+₹{req.requestedAmount}</div>
+                          </td>
+                          <td className="px-6 py-4 text-right">
+                            {req.status === 'pending' ? (
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  onClick={() => handleApproveRequest(req.id)}
+                                  className="w-8 h-8 flex items-center justify-center bg-success-green/20 hover:bg-success-green/30 text-success-green border border-success-green/30 rounded-lg transition-colors"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleRejectRequest(req.id)}
+                                  className="w-8 h-8 flex items-center justify-center bg-red-400/20 hover:bg-red-400/30 text-red-400 border border-red-500/30 rounded-lg transition-colors"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <StatusBadge status={req.status as 'approved'} />
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
-            {/* Student Deduction Approvals Table */}
-            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden">
+            {/* Global Transactions Table */}
+            <div className="bg-surface-card border border-border-subtle rounded-xl overflow-hidden mt-8">
               <div className="p-6 border-b border-border-subtle">
-                <h3 className="text-lg font-bold">Pending Deduction Approvals</h3>
+                <h3 className="text-lg font-bold">Global Transaction Feed</h3>
               </div>
 
               <div className="overflow-x-auto">
@@ -152,59 +231,42 @@ export default function FinanceAdminDashboard() {
                   <thead className="bg-primary-bg/50">
                     <tr>
                       <th className="text-left px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                        Student ID
+                        Student details
                       </th>
                       <th className="text-left px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                        Name
+                        Vendor
                       </th>
                       <th className="text-left px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                        Cycle
+                        Time
                       </th>
                       <th className="text-right px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                        Total Spend
-                      </th>
-                      <th className="text-right px-6 py-4 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                        Actions
+                        Amount
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border-subtle/50">
-                    {pendingApprovals.map((student) => (
-                      <tr key={student.id} className="hover:bg-surface-card/30 transition-colors">
+                    {recentTransactions.map((txn, index) => (
+                      <tr key={index} className="hover:bg-surface-card/30 transition-colors">
                         <td className="px-6 py-4">
-                          <span className="text-sm font-mono text-text-primary">
-                            {student.id}
+                          <span className="text-sm text-text-primary block">{txn.name}</span>
+                          <span className="text-xs font-mono text-text-muted">
+                            {txn.id}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm text-text-primary">
-                            {student.name}
+                            {txn.vendor}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm text-text-muted">
-                            {student.cycle}
+                            {txn.time}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
                           <span className="text-sm font-semibold font-mono text-text-primary">
-                            ₹{student.totalSpend.toLocaleString('en-IN')}
+                            ₹{txn.amount.toLocaleString('en-IN')}
                           </span>
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <button
-                              onClick={() => navigate(`/admin/deduction/${student.id}`)}
-                              className="px-3 py-1.5 text-xs font-medium bg-success-green/20 hover:bg-success-green/30 text-success-green border border-success-green/30 rounded-lg transition-colors"
-                            >
-                              Approve
-                            </button>
-                            <button
-                              className="px-3 py-1.5 text-xs font-medium bg-warning-amber/20 hover:bg-warning-amber/30 text-warning-amber border border-warning-amber/30 rounded-lg transition-colors"
-                            >
-                              Hold
-                            </button>
-                          </div>
                         </td>
                       </tr>
                     ))}
@@ -212,6 +274,7 @@ export default function FinanceAdminDashboard() {
                 </table>
               </div>
             </div>
+
           </div>
         </div>
       </div>

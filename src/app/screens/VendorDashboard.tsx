@@ -49,46 +49,57 @@ export default function VendorDashboard() {
             <div className="w-9" />
           </div>
 
-          {/* Today's Revenue Card */}
-          <div
-            className="bg-surface-card border border-border-subtle rounded-2xl p-6 mb-6 relative overflow-hidden"
-            style={{
-              boxShadow: `0 0 40px ${vendorColor}20`
-            }}
-          >
-            <div
-              className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
-              style={{ backgroundColor: vendorColor }}
-            />
-            <div className="relative">
-              <div className="flex items-center gap-2 text-text-muted text-sm mb-2">
-                <TrendingUp className="w-4 h-4" />
-                <span>Today's Revenue</span>
-              </div>
-              <div
-                className="text-4xl font-bold mb-1"
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                ₹4,320
+          {/* Vendor QR Code Container */}
+          <div className="bg-surface-card border border-border-subtle rounded-2xl p-8 mb-6 flex flex-col items-center">
+            <div className="bg-white p-4 rounded-xl mb-4">
+              <svg viewBox="0 0 200 200" className="w-48 h-48">
+                <rect width="200" height="200" fill="white" />
+                <rect x="10" y="10" width="60" height="60" fill="none" stroke="black" strokeWidth="8" />
+                <rect x="25" y="25" width="30" height="30" fill="black" />
+                <rect x="130" y="10" width="60" height="60" fill="none" stroke="black" strokeWidth="8" />
+                <rect x="145" y="25" width="30" height="30" fill="black" />
+                <rect x="10" y="130" width="60" height="60" fill="none" stroke="black" strokeWidth="8" />
+                <rect x="25" y="145" width="30" height="30" fill="black" />
+                <rect x="90" y="20" width="10" height="10" fill="black" />
+                <rect x="110" y="20" width="10" height="10" fill="black" />
+                <rect x="80" y="40" width="10" height="10" fill="black" />
+                <rect x="100" y="40" width="10" height="10" fill="black" />
+                <rect x="90" y="60" width="10" height="10" fill="black" />
+                <rect x="20" y="90" width="10" height="10" fill="black" />
+                <rect x="40" y="90" width="10" height="10" fill="black" />
+                <rect x="60" y="90" width="10" height="10" fill="black" />
+                <rect x="80" y="80" width="10" height="10" fill="black" />
+                <rect x="100" y="90" width="10" height="10" fill="black" />
+                <rect x="120" y="80" width="10" height="10" fill="black" />
+                <rect x="140" y="90" width="10" height="10" fill="black" />
+                <rect x="160" y="80" width="10" height="10" fill="black" />
+                <rect x="180" y="90" width="10" height="10" fill="black" />
+                <rect x="90" y="110" width="10" height="10" fill="black" />
+                <rect x="110" y="110" width="10" height="10" fill="black" />
+                <rect x="130" y="120" width="10" height="10" fill="black" />
+                <rect x="150" y="110" width="10" height="10" fill="black" />
+                <rect x="170" y="120" width="10" height="10" fill="black" />
+                <rect x="80" y="140" width="10" height="10" fill="black" />
+                <rect x="100" y="150" width="10" height="10" fill="black" />
+                <rect x="120" y="140" width="10" height="10" fill="black" />
+                <rect x="140" y="150" width="10" height="10" fill="black" />
+                <rect x="160" y="140" width="10" height="10" fill="black" />
+                <rect x="180" y="150" width="10" height="10" fill="black" />
+                <rect x="90" y="170" width="10" height="10" fill="black" />
+                <rect x="110" y="180" width="10" height="10" fill="black" />
+                <rect x="130" y="170" width="10" height="10" fill="black" />
+              </svg>
+            </div>
+
+            <div className="text-center">
+              <div className="text-sm font-semibold mb-1" style={{ color: vendorColor }}>
+                Scan to Pay {vendorName}
               </div>
               <div className="text-xs text-text-muted">
-                From 23 transactions
+                Students can scan this from their app
               </div>
             </div>
           </div>
-
-          {/* QR Scanner Button */}
-          <ActionButton
-            variant="primary"
-            size="lg"
-            fullWidth
-            onClick={() => { }}
-          >
-            <div className="flex items-center justify-center gap-3">
-              <QrCode className="w-5 h-5" />
-              <span>Scan Student Wallet</span>
-            </div>
-          </ActionButton>
 
           {/* Settlement Status */}
           <div className="mt-6 flex items-center justify-between p-4 bg-surface-card/50 border border-border-subtle rounded-xl">
